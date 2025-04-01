@@ -1,22 +1,13 @@
 # n8n_Workflows
 
----
 
 ## Inventory Agent
 
-A simple Inventory Agent that retrieves or updates inventory data stored in a Google Sheet based on user input.
+A simple `Inventory Agent` that retrieves or updates inventory data stored in a Google Sheet based on user input.
 
-Nodes Used:
+Nodes used: 
 
-1. AI Agent
-
-2. OpenAI Chat Model
-
-3. Simple Memory
-
-4. Get Inventory (Tools)
-
-5. Update Inventory (Tools)
+AI Agent, OpenAI Chat Model, Simple Memory, Get Inventory (Tools), Update Inventory (Tools)
 
 ![Inventory_Agent1](https://github.com/user-attachments/assets/90b42a1b-ac27-4438-8f64-88b8ed23c35b)
 

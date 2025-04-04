@@ -1,0 +1,203 @@
+{
+  "name": "RAG - Uploading PDF to Pinecone",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0313c085-8a90-4a93-a47c-0b4dadc8120d",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1cx-4U2JwXuJBEmg04joROtznKEdj4tai",
+          "mode": "list",
+          "cachedResultName": "Agentic Design Patterns.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1cx-4U2JwXuJBEmg04joROtznKEdj4tai/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        220,
+        0
+      ],
+      "id": "f6282284-0bdd-41c4-b10e-cc62534aaee1",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Z4AKvNLMkdWFFYgr",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "ai-agent-design",
+          "mode": "list",
+          "cachedResultName": "ai-agent-design"
+        },
+        "options": {
+          "pineconeNamespace": "Patterns"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.1,
+      "position": [
+        456,
+        0
+      ],
+      "id": "904d76a7-edf6-4213-9bdd-78281e60ea19",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "sBkQRU4FaoMKyc4H",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        220
+      ],
+      "id": "a5cadc5e-34f9-4cc3-b78c-f1e529a86b13",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        560,
+        222.5
+      ],
+      "id": "4226220b-100e-4be0-9031-199e76d01b5e",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkOverlap": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        648,
+        420
+      ],
+      "id": "a689ef33-d0c0-4497-8a95-02dce7969ea4",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "content": "## RAG - Uploading PDF to Pinecone",
+        "height": 640,
+        "width": 900,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -60,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "96a6571a-6e2d-45b2-877c-ff42297014f6",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "05db8f15-bd45-4301-989b-d9fef2e8bdf2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2e18f4425eea19669ed4128549d988a89c1f695f4e3895e608af8476842be160"
+  },
+  "id": "cUYZjMnvW7353ZcV",
+  "tags": []
+}

@@ -38,3 +38,16 @@ Google Drive (download: file), Pineconde Vector Store, OpenAI Embeddings, Defaul
 ![Uploading PDF to Pinecode Vector Database](https://github.com/user-attachments/assets/4d59ef5d-8bdc-4eaa-a412-0c612111b03d)
 
 ---
+
+## 4. RAG - AI Agent
+
+An AI agent retrieves relevant information from the Pinecone vector database built in the prior workflow to answer user questions effectively. If the information is not availale in the database, it will make use of Wikipedia to answer the user's query
+
+Nodes Used:
+
+AI Agent, OpenAI Chat Model, Simple Memory, Pineconde Vector Store, OpenAI Embeddings, Wikipedia
+
+![RAG - AI Agent](https://github.com/user-attachments/assets/cc034ea2-da02-43e2-91d7-e68e5b23a19a)
+
+---
+

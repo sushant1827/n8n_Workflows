@@ -1,0 +1,386 @@
+{
+  "name": "RAG with Supabase & Postgres",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        280,
+        140
+      ],
+      "id": "92324446-0737-409f-9788-f9517d1f3083",
+      "name": "When chat message received",
+      "webhookId": "32622484-3b38-44c6-ab45-b1a493b0bc36"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        540,
+        140
+      ],
+      "id": "348d454b-c154-4136-a56c-4ca7bf45864d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        460,
+        360
+      ],
+      "id": "5f20d627-dc8f-4d8b-9618-c9f79f0ed1db",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        620,
+        360
+      ],
+      "id": "11fa8131-3bc3-43a9-91c8-ded38cafa7d2",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "3bMSmDXwXa0TO3hT",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "AgenticPatterns",
+        "toolDescription": "Use this to get information on AI Agentic Design Patterns",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        780,
+        360
+      ],
+      "id": "51da7570-92fd-4d7e-8b2b-ea9349ba9909",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "ZtxBJQCKiAkUGVIf",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1cx-4U2JwXuJBEmg04joROtznKEdj4tai",
+          "mode": "list",
+          "cachedResultName": "Agentic Design Patterns.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1cx-4U2JwXuJBEmg04joROtznKEdj4tai/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -420,
+        140
+      ],
+      "id": "55e7196a-08f8-456b-be97-35d16f42890b",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "Z4AKvNLMkdWFFYgr",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        -180,
+        140
+      ],
+      "id": "f1abbf7a-a4a4-4b50-bf55-5d980130ef08",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "ZtxBJQCKiAkUGVIf",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        360
+      ],
+      "id": "614df561-15b9-46a0-83bc-fdc397f660a1",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        360
+      ],
+      "id": "8fbf6eda-69d0-4779-976d-3a4a1b1509aa",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkOverlap": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        20,
+        560
+      ],
+      "id": "f4c82e82-d56b-4f51-ad36-9139208c9fa2",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        140
+      ],
+      "id": "0500f187-a021-4923-b001-301d9278ee5a",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        840,
+        560
+      ],
+      "id": "950b1142-83fb-4032-8457-2678b4e448cc",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## RAG AI Agent\n",
+        "height": 640,
+        "width": 900
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        220,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "21c5667c-b131-48d7-96df-d61c31464540",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Uploading PDF to Supabase Vector Store\n",
+        "height": 640,
+        "width": 900,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -700,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "1d9ead61-eb93-47dc-899a-d5a5354b592a",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3f1dbf4a-92cd-482f-8888-68352aa8b72b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2e18f4425eea19669ed4128549d988a89c1f695f4e3895e608af8476842be160"
+  },
+  "id": "KyB17b4wWcIN7gNh",
+  "tags": []
+}

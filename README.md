@@ -51,3 +51,18 @@ AI Agent, OpenAI Chat Model, Simple Memory, Pineconde Vector Store, OpenAI Embed
 
 ---
 
+## 5. RAG with Supabase & Postgres
+
+This workflow demonstrates how to implement a Retrieval-Augmented Generation (RAG) pipeline by downloading a PDF from Google Drive, chunking its content, generating embeddings, and storing them in a Supabase vector database. This setup enables efficient retrieval of relevant information in response to user queries. Also, an AI agent retrieves relevant information from the Supabase vector database built in the prior workflow to answer user questions effectively.
+
+Nodes Used:
+
+Google Drive (download: file), Supabase Vector Store, OpenAI Embeddings, Default Data Loader, Recursive Character Text Splitter, 
+
+AI Agent, OpenAI Chat Model, Simple Memory, Supabase Vector Store, OpenAI Embeddings, Wikipedia
+
+![image](https://github.com/user-attachments/assets/c0e325f4-9f59-49d6-aeb8-8664bde347fc)
+
+
+---
+

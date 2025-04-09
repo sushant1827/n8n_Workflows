@@ -5,7 +5,7 @@
 
 A simple `Inventory Agent` that retrieves or updates inventory data stored in a Google Sheet based on user input.
 
-Nodes used: 
+``Nodes used:`` 
 
 AI Agent, OpenAI Chat Model, Simple Memory, Get Inventory (Tools), Update Inventory (Tools)
 
@@ -19,7 +19,7 @@ AI Agent, OpenAI Chat Model, Simple Memory, Get Inventory (Tools), Update Invent
 
 A simple workflow that retrieves order data from a Google Sheet and automatically sends an email notification to the specified recipient, updating them on the order status.
 
-Nodes used: 
+``Nodes used:``
 
 Google Sheet (anyUpdate), OpenAI (to compose email), Gmail (send: message)
 
@@ -31,7 +31,7 @@ Google Sheet (anyUpdate), OpenAI (to compose email), Gmail (send: message)
 
 This workflow demonstrates how to implement a Retrieval-Augmented Generation (RAG) pipeline by downloading a PDF from Google Drive, chunking its content, generating embeddings, and storing them in a Pinecone vector database. This setup enables efficient retrieval of relevant information in response to user queries.
 
-Nodes Used:
+``Nodes Used:``
 
 Google Drive (download: file), Pineconde Vector Store, OpenAI Embeddings, Default Data Loader, Recursive Character Text Splitter
 
@@ -43,7 +43,7 @@ Google Drive (download: file), Pineconde Vector Store, OpenAI Embeddings, Defaul
 
 An AI agent retrieves relevant information from the Pinecone vector database built in the prior workflow to answer user questions effectively. If the information is not availale in the database, it will make use of Wikipedia to answer the user's query
 
-Nodes Used:
+``Nodes Used:``
 
 AI Agent, OpenAI Chat Model, Simple Memory, Pineconde Vector Store, OpenAI Embeddings, Wikipedia
 
@@ -55,7 +55,7 @@ AI Agent, OpenAI Chat Model, Simple Memory, Pineconde Vector Store, OpenAI Embed
 
 This workflow demonstrates how to implement a Retrieval-Augmented Generation (RAG) pipeline by downloading a PDF from Google Drive, chunking its content, generating embeddings, and storing them in a Supabase vector database. This setup enables efficient retrieval of relevant information in response to user queries. Also, an AI agent retrieves relevant information from the Supabase vector database built in the prior workflow to answer user questions effectively.
 
-Nodes Used:
+``Nodes Used:``
 
 Google Drive (download: file), Supabase Vector Store, OpenAI Embeddings, Default Data Loader, Recursive Character Text Splitter, 
 
@@ -63,6 +63,25 @@ AI Agent, OpenAI Chat Model, Simple Memory, Supabase Vector Store, OpenAI Embedd
 
 ![image](https://github.com/user-attachments/assets/c0e325f4-9f59-49d6-aeb8-8664bde347fc)
 
-
 ---
 
+## 6. Customer Support AI Agent
+
+This workflow is triggered when a new email arrives in your Gmail inbox.
+The email is automatically classified into one of two categories: Customer Support or Other.
+
+``Customer Support:``
+
+The email is forwarded to an AI Agent, which uses a Pinecone vector store to reference your knowledge base and generate a well-formatted response. This response is then sent to the customer via the Gmail node.
+
+``Other:``
+
+No action is taken for emails classified as "Other."
+
+``Nodes Used:``
+
+Gmail (Email: Received), Email Classifier, Email Classifier - OpenAI Chat Model, AI Agent, Agent (OpenAI) Chat Model, OpenAI Embeddings, Pinecone Vector Store, Gmail (Email: Reply)
+
+![image](https://github.com/user-attachments/assets/c8112324-b616-44e9-b049-19b41b616660)
+
+---

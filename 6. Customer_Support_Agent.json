@@ -1,0 +1,323 @@
+{
+  "name": "Customer Support Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        734,
+        460
+      ],
+      "id": "56880be8-b5b1-4423-8b30-cb51fd84482d",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=# Overview \n\nYou are a policy information support agent for Tech company. Your job is to respond to incoming emails with relevant information using your knowledgeBase tool\n\n# Instructions\n- Your output should be friendly and use emojis\n- Sign off as Mr. Helpful from Tech Company"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        612,
+        -140
+      ],
+      "id": "4241e4fb-e3d8-4981-ac7e-77a32104a3a4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "knowledgeBase",
+        "toolDescription": "Call this tool to access policy information",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "ai-agent-design",
+          "mode": "list",
+          "cachedResultName": "ai-agent-design"
+        },
+        "options": {
+          "pineconeNamespace": "hr-policy"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.1,
+      "position": [
+        716,
+        82.5
+      ],
+      "id": "57024ad7-953d-4804-8c33-4e56d167a02f",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "sBkQRU4FaoMKyc4H",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        804,
+        280
+      ],
+      "id": "f24928df-eea4-4730-aa4b-490ebc8fdfad",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Customer Support Agent\n### Handling customer queries received via email and \n### responding with accurate answers to ensure prompt resolution.",
+        "height": 800,
+        "width": 1360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -60,
+        -180
+      ],
+      "typeVersion": 1,
+      "id": "ba95946c-6c21-4797-a2f9-98b8401686d3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        260
+      ],
+      "id": "f17930b7-d23c-492c-be69-9c73d3af786f",
+      "name": "Email Received Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Se6ci6VZcDgQ0rGu",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Customer Support",
+              "description": "An email that is related to helping out a customer. They may be asking questions about our policies or questions about our products and services"
+            },
+            {
+              "category": "Other",
+              "description": "Any email that is not related Customer service support related"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        220,
+        260
+      ],
+      "id": "947d7d38-e631-4563-8506-b68ddf75309e",
+      "name": "Email Classifier"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        308,
+        480
+      ],
+      "id": "7f4f00c3-20e3-479c-87c8-41d10cdd5afe",
+      "name": "Classifier Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        596,
+        80
+      ],
+      "id": "bc3bac2c-55ea-4269-87e1-bc16cfc25d38",
+      "name": "Agent Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Email Received Trigger').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1092,
+        60
+      ],
+      "id": "d0ecc28c-fad5-4fc8-ab1c-35fd9cf632d7",
+      "name": "Email Reply",
+      "webhookId": "bce920b0-d68f-4564-a971-cfbc61439dae",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Se6ci6VZcDgQ0rGu",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Pinecone Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Email Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Received Trigger": {
+      "main": [
+        [
+          {
+            "node": "Email Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Classifier": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classifier Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "694b1af6-e40f-4b0b-a516-5dee8fecdcb3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2e18f4425eea19669ed4128549d988a89c1f695f4e3895e608af8476842be160"
+  },
+  "id": "P0X53CbLyiJ22uHC",
+  "tags": []
+}

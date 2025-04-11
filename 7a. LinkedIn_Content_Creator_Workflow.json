@@ -1,0 +1,300 @@
+{
+  "name": "LinkedIn Content Creator Workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        0
+      ],
+      "id": "0cbf938b-5f0f-4277-8cc5-4da39127971f",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1FHSE3DW39e8bYN1EgaMcR1qUC_mJas-M56GNWY2wToI",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FHSE3DW39e8bYN1EgaMcR1qUC_mJas-M56GNWY2wToI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FHSE3DW39e8bYN1EgaMcR1qUC_mJas-M56GNWY2wToI/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "ToDo"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "70daf2e4-568c-4e8f-8b0e-61131f2d0a39",
+      "name": "Get Topic",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KvOjoahbcpesNRn7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"Search the web for {{ $json.Topic }}\",\n  \"topic\": \"general\",\n  \"search_depth\": \"basic\",\n  \"chunks_per_source\": 3,\n  \"max_results\": 3,\n  \"time_range\": null,\n  \"days\": 7,\n  \"include_answer\": true,\n  \"include_raw_content\": false,\n  \"include_images\": false,\n  \"include_image_descriptions\": false,\n  \"include_domains\": [],\n  \"exclude_domains\": []\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        60,
+        0
+      ],
+      "id": "4610b68e-9da6-4a7a-8f71-6b0e663f7f00",
+      "name": "Tavily Search"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Article 1: {{ $json.results[0].content }}\nArticle 2: {{ $json.results[1].content }}\nArticle 3: {{ $json.results[2].content }}\n\n",
+        "options": {
+          "systemMessage": "You are a professional content creator specializing in crafting engaging and concise LinkedIn posts. Your task is to read and synthesize the key insights from three given articles and write a single, concise LinkedIn post.\n\nThe post should:\n\nUse a professional and inspiring tone\n\nHighlight the core insight or takeaway from the combined content\n\nBe easy to read, ideally within 3–5 short paragraphs or bullet points\n\nInclude relevant hashtags (3–6 max)\n\nUse emojis sparingly and appropriately to enhance tone and readability\n\nAvoid technical jargon unless necessary for the audience\n\nYour goal: Inspire curiosity, encourage engagement, and position the post as a thoughtful reflection or takeaway from the information."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        280,
+        0
+      ],
+      "id": "1adeaaf9-2a23-4e14-bdd6-2d7d9f63d10c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        260,
+        180
+      ],
+      "id": "61203d5a-53fd-47f4-8bb6-12f5e125012f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "l8FNlTjuDhMWTtV0",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## LinkedIn Content Creator Workflow\n",
+        "height": 400,
+        "width": 1340,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -440,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "8be75880-3ff5-4291-afd5-e6b1ba9be9c6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1FHSE3DW39e8bYN1EgaMcR1qUC_mJas-M56GNWY2wToI",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FHSE3DW39e8bYN1EgaMcR1qUC_mJas-M56GNWY2wToI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1FHSE3DW39e8bYN1EgaMcR1qUC_mJas-M56GNWY2wToI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Topic": "={{ $('Get Topic').item.json.Topic }}",
+            "Status": "Created",
+            "Content": "={{ $json.output }}"
+          },
+          "matchingColumns": [
+            "Topic"
+          ],
+          "schema": [
+            {
+              "id": "Topic",
+              "displayName": "Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Content",
+              "displayName": "Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        660,
+        0
+      ],
+      "id": "55828992-4e06-4217-800a-df22e281699a",
+      "name": "Update Content",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KvOjoahbcpesNRn7",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Topic": {
+      "main": [
+        [
+          {
+            "node": "Tavily Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily Search": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Update Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3194fff0-8aec-48b3-b59a-5c51ccb54537",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2e18f4425eea19669ed4128549d988a89c1f695f4e3895e608af8476842be160"
+  },
+  "id": "2kDFcWzRQhAsmJTX",
+  "tags": []
+}

@@ -85,3 +85,18 @@ Gmail (Email: Received), Email Classifier, Email Classifier - OpenAI Chat Model,
 ![image](https://github.com/user-attachments/assets/c8112324-b616-44e9-b049-19b41b616660)
 
 ---
+
+## 7. LinkedIn Content Creator Agent
+
+This workflow is triggered manually. It reads topics listed in a Google Sheet stored in your Google Drive.
+For each topic, it performs a web search and retrieves at least three relevant results.
+An AI agent then analyzes the search results and generates a concise summary for each topic.
+Finally, the generated information is updated back into the same Google Sheet from which the topics were originally fetched.
+
+``Nodes Used:``
+
+Manual Trigger using a Click, Get topic from Google Sheet, Tavily Search using HTTP request, AI Agent, Agent (OpenAI) Chat Model, Updating the Google Sheet
+
+![image](https://github.com/user-attachments/assets/dc8a4e1b-23b7-4c86-8b76-21d8a78d50d9)
+
+---

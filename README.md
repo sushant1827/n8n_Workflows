@@ -100,3 +100,19 @@ Manual Trigger using a Click, Get topic from Google Sheet, Tavily Search using H
 ![image](https://github.com/user-attachments/assets/dc8a4e1b-23b7-4c86-8b76-21d8a78d50d9)
 
 ---
+
+## 8. RAG with Vectorize
+
+In this project, I’ve created an AI agent using n8n that interacts with a Pinecone vector store as its knowledge base. The vector store was prepopulated using Vectorize, ensuring high-quality, semantically relevant data retrieval. The agent can effectively answer user questions by fetching and reasoning over the most relevant context from the vector store.
+
+``Nodes Used:``
+
+AI Agent, OpenAI Chat Model, Simple Memory, Pinecone Vector Store, OpenAI Embeddings
+
+Vectorize Platform is a RAG-as-a-Service that handles the messy, complex parts of AI development—so you can focus on building intelligent applications.
+
+![Screenshot 2025-04-12 164109](https://github.com/user-attachments/assets/ea7d346d-2cff-4d53-b8c8-4088fa4538fe)
+
+![image](https://github.com/user-attachments/assets/99cbba46-2d7f-4aad-8b92-b28d5dd3173f)
+
+---

@@ -116,3 +116,21 @@ Vectorize Platform is a RAG-as-a-Service that handles the messy, complex parts o
 ![image](https://github.com/user-attachments/assets/99cbba46-2d7f-4aad-8b92-b28d5dd3173f)
 
 ---
+
+## 9. Firecrawl for Webpage Data Extraction
+
+1. **Extract website data** using Firecrawl APIs from one or multiple pages.
+
+2. **Poll (Wait) for completion**, ensuring extraction is finished before proceeding.
+
+3. **Save the extracted data** directly into an existing Google Sheet.
+
+4. **Handle failures gracefully** by sending an automated email notification to the tool owner.
+
+``Nodes Used:``
+
+Manual Trigger node, HTTP requests to Firecrawl API Endpoints, Switch based on response, Wait if response is processing, Code for data refinement, Google Sheet to Save the response, Gmail to Send Message for Failure and Cancel.
+
+![image](https://github.com/user-attachments/assets/a0d41ffe-33e2-4324-b6ff-7fa57ece2215)
+
+---
